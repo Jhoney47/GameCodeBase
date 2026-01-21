@@ -132,10 +132,7 @@ export default function HomeScreen() {
         <View className="px-4 pt-6 pb-3 web:px-8">
           <View className="flex-row items-center justify-between mb-6">
             <View>
-              <Text className="text-3xl font-bold text-foreground">游戏码宝</Text>
-              <Text className="text-sm text-muted mt-1">
-                收集最新游戏兑换码 · 云端同步
-              </Text>
+              <Text className="text-3xl font-bold text-foreground">GameCode</Text>
             </View>
             <Text className="text-4xl">🎮</Text>
           </View>
