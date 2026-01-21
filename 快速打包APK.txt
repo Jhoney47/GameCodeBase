@@ -1,0 +1,30 @@
+========================================
+  游戏码宝 - Flutter APK 快速打包
+========================================
+
+最简单的打包方法:
+
+1. 安装Flutter SDK
+   下载: https://flutter.dev/docs/get-started/install/windows
+   解压并添加到PATH
+
+2. 安装Android Studio
+   下载: https://developer.android.com/studio
+   安装Android SDK
+
+3. 双击运行: 一键打包APK.bat
+
+4. 等待5-10分钟
+
+5. 在 build/app/outputs/flutter-apk/ 目录获取APK
+
+========================================
+
+推荐分发的APK:
+- app-arm64-v8a-release.apk (适用于99%的手机)
+
+========================================
+
+详细步骤请查看: APK打包完整指南.md
+
+========================================

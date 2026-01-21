@@ -1,0 +1,104 @@
+name: 自动打包Flutter APK
+
+# 触发条件：推送tag或手动触发
+on:
+  push:
+    tags:
+      - 'v*'  # 当推送v开头的tag时触发，如 v1.0.0
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build-apk:
+    name: 构建Android APK
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 检出代码
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      # 2. 设置Java环境
+      - name: 设置Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      # 3. 设置Flutter环境
+      - name: 设置Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+      
+      # 4. 获取依赖
+      - name: 安装依赖
+        run: flutter pub get
+      
+      # 5. 打包APK
+      - name: 构建APK
+        run: flutter build apk --release --split-per-abi
+      
+      # 6. 获取版本号
+      - name: 获取版本号
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=dev-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_OUTPUT
+          fi
+      
+      # 7. 重命名APK文件
+      - name: 重命名APK
+        run: |
+          mkdir -p release
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release/game_code_app-${{ steps.version.outputs.VERSION }}-arm64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release/game_code_app-${{ steps.version.outputs.VERSION }}-arm32.apk || true
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk release/game_code_app-${{ steps.version.outputs.VERSION }}-x86.apk || true
+      
+      # 8. 上传APK为Artifact
+      - name: 上传APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-${{ steps.version.outputs.VERSION }}
+          path: release/*.apk
+      
+      # 9. 创建GitHub Release（仅tag触发时）
+      - name: 创建Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/*.apk
+          body: |
+            ## 游戏码宝 ${{ steps.version.outputs.VERSION }}
+            
+            ### 📱 下载APK
+            
+            **推荐下载：** `game_code_app-${{ steps.version.outputs.VERSION }}-arm64.apk`
+            - 适用于99%的现代Android手机（2015年后）
+            - 文件大小约10MB
+            
+            **其他版本：**
+            - `arm32.apk` - 适用于旧款32位手机
+            - `x86.apk` - 适用于x86架构设备（极少）
+            
+            ### 📥 安装方法
+            
+            1. 点击下载APK文件
+            2. 在手机上打开下载的文件
+            3. 允许"未知来源"安装
+            4. 安装完成后打开应用
+            
+            ### ✨ 更新内容
+            
+            - 自动从GitHub获取最新兑换码
+            - 国内CDN加速，无需VPN
+            - 支持搜索、筛选、排序
+            - 一键复制兑换码
+            
+            ---
+            
+            **完整更新日志请查看提交记录**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

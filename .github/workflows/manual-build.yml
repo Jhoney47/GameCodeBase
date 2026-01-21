@@ -1,0 +1,50 @@
+name: 手动打包APK
+
+# 仅手动触发
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: '版本名称（如: v1.0.0）'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    name: 手动构建APK
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: 设置Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+      
+      - name: 安装依赖
+        run: flutter pub get
+      
+      - name: 构建APK
+        run: flutter build apk --release --split-per-abi
+      
+      - name: 准备发布文件
+        run: |
+          mkdir -p release
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release/game_code_app-${{ github.event.inputs.version_name }}-arm64.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release/game_code_app-${{ github.event.inputs.version_name }}-arm32.apk || true
+      
+      - name: 上传APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-${{ github.event.inputs.version_name }}
+          path: release/*.apk
+          retention-days: 30
