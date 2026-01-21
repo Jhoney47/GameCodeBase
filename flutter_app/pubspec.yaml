@@ -1,0 +1,44 @@
+name: game_code_flutter
+description: 游戏兑换码收集应用 - Flutter版本
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # HTTP请求
+  http: ^1.1.0
+  
+  # 状态管理
+  provider: ^6.1.1
+  
+  # JSON序列化
+  json_annotation: ^4.8.1
+  
+  # 剪贴板
+  flutter_clipboard: ^1.0.1
+  
+  # 下拉刷新
+  pull_to_refresh: ^2.0.0
+  
+  # 图标
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^3.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.7
+
+flutter:
+  uses-material-design: true
+  
+  # 如果需要添加字体或图片资源，在这里配置
+  # assets:
+  #   - assets/images/
