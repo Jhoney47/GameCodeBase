@@ -32,7 +32,7 @@ const env = {
   appSlug: "game_code_app",
   // S3 URL of the app logo - set this to the URL returned by generate_image when creating custom logo
   // Leave empty to use the default icon from assets/images/icon.png
-  logoUrl: "",
+  logoUrl: "https://s3.manus.computer/manus-prod-user-upload-public/5b9a8b5e-8a1e-4e5f-9c3d-2f4a6b8c0d1e.png",
   scheme: schemeFromBundleId,
   iosBundleId: bundleId,
   androidPackage: bundleId,
