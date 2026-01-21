@@ -21,3 +21,27 @@
 - [x] 实现错误处理
 - [x] 测试移动端和Web端响应式布局
 - [x] 创建Checkpoint
+
+## Flutter版本开发任务
+
+- [x] 创建Flutter项目结构
+- [x] 配置pubspec.yaml依赖
+- [x] 实现数据模型（GameCode, GameData）
+- [x] 实现code_repository.dart（使用jsDelivr CDN）
+- [x] 实现主题配置（AppTheme）
+- [x] 实现兑换码卡片组件（CodeCard）
+- [x] 实现home_screen.dart（动态Tabs、下拉刷新）
+- [x] 实现code_detail_screen.dart（详情页、复制功能）
+- [x] 实现状态管理（Provider/Riverpod）
+- [x] 测试国内访问CDN链接
+- [x] 测试下拉刷新和缓存破除
+- [x] 打包APK供用户测试
+
+## GitHub Actions自动打包APK
+
+- [ ] 创建GitHub Actions工作流配置
+- [ ] 配置自动发布Release
+- [ ] 配置APK自动上传
+- [ ] 创建使用说明文档
+- [ ] 提交配置到GitHub
+- [ ] 验证自动打包功能
